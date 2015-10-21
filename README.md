@@ -1,5 +1,7 @@
 # Swift-GCD-Program
 
+> [Objective-C版本的GCD](https://github.com/YouXianMing/GCD-Program)
+
 ```
 //
 //  ViewController.swift
@@ -259,6 +261,4 @@ class ViewController: UIViewController {
     }
 }
 ```
-
-* [Objective-C版本的GCD](https://github.com/YouXianMing/GCD-Program)
 
