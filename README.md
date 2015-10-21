@@ -1,6 +1,6 @@
 # Swift-GCD-Program
 
-> [Objective-C版本的GCD](https://github.com/YouXianMing/GCD-Program)
+> [Objective-C版本GCD](https://github.com/YouXianMing/GCD-Program)
 
 ```
 //
