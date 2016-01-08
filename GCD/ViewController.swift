@@ -29,22 +29,22 @@ class ViewController: UIViewController {
     */
     func normalUse() {
         
-        GCDQueue.globalQueue.excute { () -> Void in
+        GCDQueue.globalQueue.excute { 
             
             // 子线程执行操作
             
-            GCDQueue.mainQueue.excute({ () -> Void in
+            GCDQueue.mainQueue.excute({ 
                 
                 // 主线程更新UI
             })
         }
         
         
-        GCDQueue.executeInGlobalQueue { () -> Void in
+        GCDQueue.executeInGlobalQueue { 
             
             // 子线程执行操作
             
-            GCDQueue.executeInMainQueue({ () -> Void in
+            GCDQueue.executeInMainQueue({ 
                 
                 // 主线程更新UI
             })
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     */
     func delayUse() {
         
-        GCDQueue.executeInGlobalQueue({ () -> Void in
+        GCDQueue.executeInGlobalQueue({ 
             
             // 延时 2s 执行
             
@@ -67,25 +67,25 @@ class ViewController: UIViewController {
         
         queue = GCDQueue(queueType: .ConcurrentQueue)
         
-        queue.waitExecute { () -> Void in
+        queue.waitExecute { 
             
             print("1")
             sleep(1)
         }
         
-        queue.waitExecute { () -> Void in
+        queue.waitExecute { 
             
             print("2")
             sleep(1)
         }
         
-        queue.waitExecute { () -> Void in
+        queue.waitExecute { 
             
             print("3")
             sleep(1)
         }
         
-        queue.waitExecute { () -> Void in
+        queue.waitExecute { 
             
             print("4")
         }
@@ -98,38 +98,38 @@ class ViewController: UIViewController {
         
         queue = GCDQueue(queueType: .ConcurrentQueue)
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("1")
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("2")
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("3")
             sleep(1)
         }
         
-        queue.barrierExecute { () -> Void in
+        queue.barrierExecute { 
             
             print("barrierExecute")
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("4")
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("5")
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("6")
         }
@@ -143,55 +143,55 @@ class ViewController: UIViewController {
         group = GCDGroup()
         queue = GCDQueue()
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("1")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("2")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("3")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("4")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("5")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("6")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("7")
             
             }, inGroup: group)
         
-        queue.excute({ () -> Void in
+        queue.excute({ 
             
             print("8")
             
             }, inGroup: group)
         
-        queue.notify({ () -> Void in
+        queue.notify({ 
             
             print("都完成了")
             
@@ -204,11 +204,12 @@ class ViewController: UIViewController {
     func timerUse() {
         
         timer = GCDTimer(inQueue: GCDQueue.globalQueue)
-        timer.event({ () -> Void in
+        timer.event({
             
             print("timer event")
             
-            }, timeIntervalWithSeconds: 1)
+            }, timeIntervalWithSeconds: 5, delayWithSeconds: 5)
+        
         timer.start()
     }
     
@@ -220,31 +221,31 @@ class ViewController: UIViewController {
         semaphore = GCDSemaphore()
         queue     = GCDQueue(queueType: .ConcurrentQueue)
         
-        queue.excute { () -> Void in
+        queue.excute {  
             
             print("1")
             self.semaphore.signal()
         }
         
-        queue.excute { () -> Void in
+        queue.excute {  
             
             print("2")
             self.semaphore.signal()
         }
         
-        queue.excute { () -> Void in
+        queue.excute {  
             
             print("3")
             self.semaphore.signal()
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             print("4")
             self.semaphore.signal()
         }
         
-        queue.excute { () -> Void in
+        queue.excute { 
             
             self.semaphore.wait()
             self.semaphore.wait()
