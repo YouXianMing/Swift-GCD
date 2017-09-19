@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:GCD.xcodeproj">
+      location = "self:Swift-GCD.xcodeproj">
    </FileRef>
 </Workspace>
