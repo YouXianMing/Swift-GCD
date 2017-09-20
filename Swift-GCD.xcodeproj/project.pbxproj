@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50983791F72328100C1BDA8 /* GCDQueuePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50983781F72328100C1BDA8 /* GCDQueuePriority.swift */; };
+		C509837B1F7239B100C1BDA8 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C509837A1F7239B100C1BDA8 /* GCDTimer.swift */; };
 		C5B7CF8E1F70EDA800AC4907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B7CF8D1F70EDA800AC4907 /* AppDelegate.swift */; };
 		C5B7CF901F70EDA900AC4907 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B7CF8F1F70EDA900AC4907 /* ViewController.swift */; };
 		C5B7CF931F70EDA900AC4907 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5B7CF911F70EDA900AC4907 /* Main.storyboard */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C50983781F72328100C1BDA8 /* GCDQueuePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDQueuePriority.swift; sourceTree = "<group>"; };
+		C509837A1F7239B100C1BDA8 /* GCDTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
 		C5B7CF8A1F70EDA800AC4907 /* Swift-GCD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-GCD.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5B7CF8D1F70EDA800AC4907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5B7CF8F1F70EDA900AC4907 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,10 +67,10 @@
 				C5B7CF8D1F70EDA800AC4907 /* AppDelegate.swift */,
 				C5B7CF8F1F70EDA900AC4907 /* ViewController.swift */,
 				C5D003681F7116DC00561550 /* GCD */,
-				C5B7CF911F70EDA900AC4907 /* Main.storyboard */,
 				C5B7CF941F70EDA900AC4907 /* Assets.xcassets */,
 				C5B7CF961F70EDA900AC4907 /* LaunchScreen.storyboard */,
 				C5B7CF991F70EDA900AC4907 /* Info.plist */,
+				C5B7CF911F70EDA900AC4907 /* Main.storyboard */,
 			);
 			path = "Swift-GCD";
 			sourceTree = "<group>";
@@ -77,6 +81,8 @@
 				C5B7CF9F1F70EDE100AC4907 /* GCDQueue.swift */,
 				C5D003641F71031B00561550 /* GCDGroup.swift */,
 				C5D003661F710C0400561550 /* GCDSemaphore.swift */,
+				C509837A1F7239B100C1BDA8 /* GCDTimer.swift */,
+				C50983781F72328100C1BDA8 /* GCDQueuePriority.swift */,
 			);
 			path = GCD;
 			sourceTree = "<group>";
@@ -157,7 +163,9 @@
 				C5B7CF901F70EDA900AC4907 /* ViewController.swift in Sources */,
 				C5B7CFA01F70EDE100AC4907 /* GCDQueue.swift in Sources */,
 				C5D003671F710C0400561550 /* GCDSemaphore.swift in Sources */,
+				C50983791F72328100C1BDA8 /* GCDQueuePriority.swift in Sources */,
 				C5B7CF8E1F70EDA800AC4907 /* AppDelegate.swift in Sources */,
+				C509837B1F7239B100C1BDA8 /* GCDTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
