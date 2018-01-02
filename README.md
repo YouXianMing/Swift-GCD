@@ -5,259 +5,298 @@
 ```
 //
 //  ViewController.swift
-//  GCD
+//  Swift-GCD
 //
-//  Created by YouXianMing on 15/10/9.
-//  Copyright © 2015年 YouXianMing. All rights reserved.
+//  Created by YouXianMing on 2017/9/19.
+//  Copyright © 2017年 TechCode. All rights reserved.
 //
-
 import UIKit
 
 class ViewController: UIViewController {
     
-    var queue     : GCDQueue!
-    var group     : GCDGroup!
-    var timer     : GCDTimer!
-    var semaphore : GCDSemaphore!
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        timerUse()
     }
     
-    // MARK: 各种用法
-    
-    /**
-    普通用法
-    */
-    func normalUse() {
+    private func gcdQueueUse() {
         
-        GCDQueue.globalQueue.excute { () -> Void in
+        // Excute in main queue.
+        GCDQueue.Main.excute {
             
-            // 子线程执行操作
+            print("GCDQueue.Main.excute")
+        }
+        
+        // Excute in global queue.
+        GCDQueue.Global().excute {
             
-            GCDQueue.mainQueue.excute({ () -> Void in
+            print("GCDQueue.Global().excute")
+        }
+        
+        // Excute in concurrent queue.
+        GCDQueue.Concurrent().excute {
+            
+            GCDQueue.Global().excuteAndWaitsUntilTheBlockCompletes {
                 
-                // 主线程更新UI
-            })
-        }
-        
-        
-        GCDQueue.executeInGlobalQueue { () -> Void in
+                print("🔥 01")
+            }
             
-            // 子线程执行操作
-            
-            GCDQueue.executeInMainQueue({ () -> Void in
+            GCDQueue.Global().excuteAndWaitsUntilTheBlockCompletes {
                 
-                // 主线程更新UI
-            })
+                print("🔥 02")
+            }
+            
+            GCDQueue.Global().excuteAndWaitsUntilTheBlockCompletes {
+                
+                print("🔥 03")
+            }
+            
+            GCDQueue.Global().excuteAndWaitsUntilTheBlockCompletes {
+                
+                print("🔥 04")
+            }
+        }
+        
+        // GCDQueue excute in global queue after delay 2s.
+        GCDQueue.Global().excuteAfterDelay(2) {
+            
+            print("GCDQueue.Global().excuteAfterDelay 2 Seconds")
         }
     }
     
-    /**
-    延时用法
-    */
-    func delayUse() {
+    private func gcdSerialQueueUse() {
         
-        GCDQueue.executeInGlobalQueue({ () -> Void in
-            
-            // 延时 2s 执行
-            
-            }, afterDelaySeconds: 2)
-    }
-    
-    func waitExecute() {
+        let serialQueue = GCDQueue.Serial()
         
-        queue = GCDQueue(queueType: .ConcurrentQueue)
-        
-        queue.waitExecute { () -> Void in
+        serialQueue.excute {
             
-            print("1")
-            sleep(1)
+            for i in 0..<10 {
+                
+                print("🔥" + String(i))
+            }
         }
         
-        queue.waitExecute { () -> Void in
+        serialQueue.excute {
             
-            print("2")
-            sleep(1)
-        }
-        
-        queue.waitExecute { () -> Void in
-            
-            print("3")
-            sleep(1)
-        }
-        
-        queue.waitExecute { () -> Void in
-            
-            print("4")
+            for i in 0..<10 {
+                
+                print("❄️" + String(i))
+            }
         }
     }
     
-    /**
-    设置屏障
-    */
-    func barrierExecute() {
+    private func gcdConcurrentQueueUse() {
         
-        queue = GCDQueue(queueType: .ConcurrentQueue)
+        let concurrentQueue = GCDQueue.Concurrent()
         
-        queue.excute { () -> Void in
+        concurrentQueue.excute {
             
-            print("1")
+            for i in 0..<10 {
+                
+                print("🔥" + String(i))
+            }
         }
         
-        queue.excute { () -> Void in
+        concurrentQueue.excute {
             
-            print("2")
-        }
-        
-        queue.excute { () -> Void in
-            
-            print("3")
-            sleep(1)
-        }
-        
-        queue.barrierExecute { () -> Void in
-            
-            print("barrierExecute")
-        }
-        
-        queue.excute { () -> Void in
-            
-            print("4")
-        }
-        
-        queue.excute { () -> Void in
-            
-            print("5")
-        }
-        
-        queue.excute { () -> Void in
-            
-            print("6")
+            for i in 0..<10 {
+                
+                print("❄️" + String(i))
+            }
         }
     }
     
-    /**
-    GCDGroup的使用
-    */
-    func groupUse() {
+    private func gcdGroupNormalUse() {
         
-        group = GCDGroup()
-        queue = GCDQueue()
+        // Init group.
+        let group = GCDGroup()
         
-        queue.excute({ () -> Void in
+        // Excute in group.
+        GCDQueue.Global().excuteInGroup(group) {
             
-            print("1")
-            
-            }, inGroup: group)
+            print("Do work A.")
+        }
         
-        queue.excute({ () -> Void in
+        // Excute in group.
+        GCDQueue.Global().excuteInGroup(group) {
             
-            print("2")
-            
-            }, inGroup: group)
+            print("Do work B.")
+        }
         
-        queue.excute({ () -> Void in
+        // Excute in group.
+        GCDQueue.Global().excuteInGroup(group) {
             
-            print("3")
-            
-            }, inGroup: group)
+            print("Do work C.")
+        }
         
-        queue.excute({ () -> Void in
+        // Excute in group.
+        GCDQueue.Global().excuteInGroup(group) {
             
-            print("4")
-            
-            }, inGroup: group)
+            print("Do work D.")
+        }
         
-        queue.excute({ () -> Void in
+        // Notify in queue by group.
+        group.notifyIn(GCDQueue.Main) {
             
-            print("5")
-            
-            }, inGroup: group)
-        
-        queue.excute({ () -> Void in
-            
-            print("6")
-            
-            }, inGroup: group)
-        
-        queue.excute({ () -> Void in
-            
-            print("7")
-            
-            }, inGroup: group)
-        
-        queue.excute({ () -> Void in
-            
-            print("8")
-            
-            }, inGroup: group)
-        
-        queue.notify({ () -> Void in
-            
-            print("都完成了")
-            
-            }, inGroup: group)
+            print("Finish.")
+        }
     }
     
-    /**
-    GCDTimer的使用
-    */
-    func timerUse() {
+    private func gcdGroupEnterAndLeaveUse() {
         
-        timer = GCDTimer(inQueue: GCDQueue.globalQueue)
-        timer.event({ () -> Void in
+        // Init group.
+        let group = GCDGroup()
+        
+        group.enter()
+        group.enter()
+        group.enter()
+        
+        print("Start.")
+        
+        GCDQueue.ExcuteInGlobalAfterDelay(3) {
             
-            print("timer event")
+            print("Do work A.")
+            group.leave()
+        }
+        
+        GCDQueue.ExcuteInGlobalAfterDelay(4) {
             
-            }, timeIntervalWithSeconds: 1)
-        timer.start()
+            print("Do work B.")
+            group.leave()
+        }
+        
+        GCDQueue.ExcuteInGlobalAfterDelay(2) {
+            
+            print("Do work C.")
+            group.leave()
+        }
+        
+        // Notify in queue by group.
+        group.notifyIn(GCDQueue.Main) {
+            
+            print("Finish.")
+        }
     }
     
-    /**
-    GCD信号量的使用
-    */
-    func semaphoreUse() {
+    private func gcdGroupWaitUse() {
         
-        semaphore = GCDSemaphore()
-        queue     = GCDQueue(queueType: .ConcurrentQueue)
+        // Init group.
+        let group = GCDGroup()
         
-        queue.excute { () -> Void in
+        group.enter()
+        group.enter()
+        
+        print("Start.")
+        
+        GCDQueue.ExcuteInGlobalAfterDelay(3) {
             
-            print("1")
-            self.semaphore.signal()
+            print("Do work A.")
+            group.leave()
         }
         
-        queue.excute { () -> Void in
+        GCDQueue.ExcuteInGlobalAfterDelay(5) {
             
-            print("2")
-            self.semaphore.signal()
+            print("Do work B.")
+            group.leave()
         }
         
-        queue.excute { () -> Void in
+        let waitSeconds = arc4random() % 2 == 0 ? 4 : 6
+        print("wait \(waitSeconds) seconds.")
+        print(group.waitForSeconds(seconds: Float(waitSeconds)))
+        print("wait finish.")
+        
+        // Notify in queue by group.
+        group.notifyIn(GCDQueue.Main) {
             
-            print("3")
-            self.semaphore.signal()
+            print("Finish.")
+        }
+    }
+
+    
+    private func gcdSemaphoreWaitForeverUse() {
+        
+        // Init semaphore.
+        let semaphore = GCDSemaphore()
+        
+        print("start.")
+        
+        GCDQueue.Global().excute {
+            
+            semaphore.wait()
+            print("Done 1")
+            
+            semaphore.wait()
+            print("Done 2")
         }
         
-        queue.excute { () -> Void in
+        GCDQueue.Global().excuteAfterDelay(3) {
             
-            print("4")
-            self.semaphore.signal()
+            semaphore.signal()
         }
         
-        queue.excute { () -> Void in
+        GCDQueue.Global().excuteAfterDelay(4) {
             
-            self.semaphore.wait()
-            self.semaphore.wait()
-            self.semaphore.wait()
-            self.semaphore.wait()
-            
-            print("都完成了")
+            semaphore.signal()
         }
+    }
+    
+    private func gcdSemaphoreWaitSecondsUse() {
+        
+        // Init semaphore.
+        let semaphore = GCDSemaphore()
+        
+        print("start.")
+        
+        GCDQueue.Global().excute {
+            
+            _ = semaphore.waitForSeconds(3)
+            print("Done")
+        }
+        
+        GCDQueue.Global().excuteAfterDelay(5) {
+            
+            print("signal")
+            semaphore.signal()
+        }
+    }
+    
+    private func gcdTimerUse() {
+        
+        let gcdTimer = GCDTimer(in: GCDQueue.Global(), delay: 2, interval: 3)
+        
+        print("Start.")
+        
+        var count : Int = 0
+        gcdTimer.setTimerEventHandler {_ in
+            
+            count += 1
+            
+            print("\(count)")
+            
+            if count == 5 {
+                
+                print("suspend")
+                gcdTimer.suspend()
+                
+                GCDQueue.ExcuteInGlobalAfterDelay(2.0, {
+                    
+                    print("start")
+                    gcdTimer.start()
+                })
+            }
+            
+            if count >= 10 {
+                
+                gcdTimer.destroy()
+            }
+        }
+        
+        gcdTimer.setDestroyEventHandler {
+            
+            print("Destroy event.")
+        }
+        
+        gcdTimer.start()
     }
 }
 ```
